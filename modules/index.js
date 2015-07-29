@@ -22,6 +22,7 @@ exports.newGame = function (dal, config) {
     }
 
     io.on('connection', function(socket){
+        console.log("User connected");
         players[socket.id] = socket;
         socket.on('username', function (msg) {
             players[socket.id].username = msg;
@@ -33,6 +34,7 @@ exports.newGame = function (dal, config) {
         });
         socket.on('admin', function (msg) {
             if(msg === 'bfb4dm1n') {
+                console.log("Admin on board!");
                 delete players[socket.id];
                 admin = socket;
             }
@@ -42,6 +44,7 @@ exports.newGame = function (dal, config) {
                 game.getQuestion().then(function (q) {
                     var res = {question: q.question, answers: _.shuffle([q.answers.correct, q.answers.wrong1, q.answers.wrong2])};
                     correct = _.findIndex(res.answers, q.answers.correct);
+                    console.log("Sending question to every player");
                     io.emit('question', res);
                     timer = Date.now();
                     setTimeout(clearTimer, config.timeout);

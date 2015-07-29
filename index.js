@@ -19,6 +19,7 @@ var game = require('./modules');
 process.on('uncaughtException', function(error) {
     console.log("Uncaught exception in master. Terminating.");
     console.log(error);
+    console.log(error.stack);
 
     process.exit(1);
 });

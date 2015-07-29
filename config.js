@@ -5,7 +5,7 @@ var config = {
     console_date_format: "YYYY-MM-DD HH:mm:ss",
     logrequests: true,
     mongo: {
-        path: "mongodb://localhost/matrix",
+        path: "mongodb://localhost/pokerarc",
     },
     timeout: 5000
 };
