@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" /> 
+        <title>Pókerarc</title>
+        <script src="jquery.min.js"></script>
+        <script src="socket.io-1.2.0.js"></script>
+        <script>
+            var socket = io();
+            
+            function sendAnswer(ansLetter) {
+                alert(ansLetter);
+            }
+        </script>
+    </head>
+    <body>
+        <table border="0" id="questionaire">
+            <tr>
+                <td id="question" colspan="6"></td>
+            </tr>
+            <tr>
+                <td><input type ="button" id="answerButtonA" onclick="sendAnswer('A')"</td>
+                <td id="answerA"></td>
+                <td><input type ="button" id="answerButtonB" onclick="sendAnswer('B')"</td>
+                <td id="answerB"></td>
+                <td><input type ="button" id="answerButtonC" onclick="sendAnswer('C')"</td>
+                <td id="answerC"></td>                
+        </table>
+    </body>
+</html> 
