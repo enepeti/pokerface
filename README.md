@@ -15,7 +15,7 @@
 
 - A kérdéseket és a válaszokat véletlenszerű sorrendbe rendezi egy mongo script, mielőtt elkezdődne a játék
 
-- _Kérdéses funkciók_
+### Kérdéses funkciók
 
 - Ha több azonos név van, akkor esetleg a backend visszautasíthatja a másodikat, és akkor újat kell küldenie
 
