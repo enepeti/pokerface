@@ -5,7 +5,7 @@ exports.newGame = function (dal, config) {
     var game = new _game(dal);
 
     var players = {};
-    var currentAnswers = [];
+    var currentAnswers = {};
     var admin = {};
     var correct = 0;
     var timer = 0;
@@ -29,11 +29,11 @@ exports.newGame = function (dal, config) {
         });
         socket.on('answer', function (msg) {
             if(!currentAnswers[socket.id] && timer != 0) {
-                currentAnswers[socket.id] = {answer: msg, time: Date.now().getTime() - timer.getTime()};
+                currentAnswers[socket.id] = {answer: msg, time: Date.now() - timer};
             }
         });
         socket.on('admin', function (msg) {
-            if(msg === 'bfb4dm1n') {
+            if(msg === 'a') {
                 console.log("Admin on board!");
                 delete players[socket.id];
                 admin = socket;
@@ -41,9 +41,14 @@ exports.newGame = function (dal, config) {
         });
         socket.on('new', function (msg) {
             if(admin.id == socket.id) {
+                console.log("New question request");
+                currentAnswers = {};
                 game.getQuestion().then(function (q) {
+                    console.log("Question randomized");
                     var res = {question: q.question, answers: _.shuffle([q.answers.correct, q.answers.wrong1, q.answers.wrong2])};
-                    correct = _.findIndex(res.answers, q.answers.correct);
+                    correct = _.findIndex(res.answers, function (str) {
+                        return str == q.answers.correct;
+                    });
                     console.log("Sending question to every player");
                     io.emit('question', res);
                     timer = Date.now();

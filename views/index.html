@@ -49,7 +49,7 @@
             });
             
             function sendAnswer(ansLetter) {
-                if(!lastanswer) {
+                if(!lastAnswer) {
                     socket.emit('answer', ansLetter);
                     $('#answerButton' + ansLetter).css("background", "yellow");
                     $('#answer' + ansLetter).css("background", "yellow");
