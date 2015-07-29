@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" /> 
+        <title>Pókerarc admin</title>
+        <script src="jquery.min.js"></script>
+        <script src="socket.io-1.2.0.js"></script>
+        <script>
+            var socket = io();
+            
+            socket.on('question', function(data) {
+                $('#tda').css("background", "transparent");
+                $('#tdb').css("background", "transparent");
+                $('#tdc').css("background", "transparent");
+                $('#answera').css("background", "transparent");
+                $('#answerb').css("background", "transparent");
+                $('#answerc').css("background", "transparent");
+                $('#question').val(data.question);
+                $('#answera').val(data.answers[0]);
+                $('#answerb').val(data.answers[1]);
+                $('#answerc').val(data.answers[2]);
+            });
+            
+            socket.on('correct', function(correctAnswer) {
+                $('#td' + correctAnswer).css("background", "green");
+                $('#answer' + correctAnswer).css("background", "green");
+            });
+            
+            function newQuestion() {
+                socket.emit('new');
+            }
+            
+            function newGame() {
+                socket.emit('gameover');
+            }
+            
+            function sendPw() {
+                var pw = $('#pw').val();
+                $('#pw').val('');
+                socket.emit('admin', pw);
+            }
+        </script>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <td>Admin jelszó:</td>
+                <td><input type="text" id="pw"/></td>
+                <td><button onclick="sendPw()">OK</button></td>
+            </tr>
+            <tr>
+                <td id="question" colspan="6"></td>
+            </tr>
+            <tr>
+                <td id="tda">A</td>
+                <td id="answera"></td>
+                <td id="tdb">B</td>
+                <td id="answerb"></td>
+                <td id="tdc">C</td>
+                <td id="answerc"></td>
+            </tr>
+            <tr>
+                <td colspan="6"><button onclick="newQuestion()">Új kérdés</button></td>
+            </tr>
+            <tr>
+                <td><select id="playerSelect"/></td>
+                <td><button onclick="dropPlayer()">Kiesett</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="newGame()">Új játék</button></td>
+            </tr>
+        </table>
+    </body>
+</html> 
