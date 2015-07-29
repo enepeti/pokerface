@@ -19,6 +19,9 @@ module.exports = function(mongoose) {
             wrong2: {
                 type: String
             }
+        },
+        asked: {
+            type: Boolean
         }
     });
 

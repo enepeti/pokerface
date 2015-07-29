@@ -1,17 +1,20 @@
 var _ = require("lodash");
 var config = require('./config');
 var _ = require("lodash");
+var Q = require("q");
 
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
-var io = require("socket.io")(http);
+GLOBAL.io = require("socket.io")(http);
 
 var bodyparser = require("body-parser");
 var path = require('path');
 
 var data_access_layer = require('./models/dal/mongodb');
 var dal = new data_access_layer(config);
+
+var game = require('./modules');
 
 process.on('uncaughtException', function(error) {
     console.log("Uncaught exception in master. Terminating.");
@@ -31,10 +34,12 @@ app.get('/', function(req, res){
    res.sendfile('./views/index.html');
 });
 
-io.on('connection', function(socket){
-  console.log('a user connected');
+app.get('/admin', function(req, res){
+   res.sendfile('./views/admin.html');
 });
 
 http.listen(app.get('port'), function(){
   console.log("Listening on " + app.get('port'));
 });
+
+game.newGame(dal, config);

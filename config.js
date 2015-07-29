@@ -6,6 +6,7 @@ var config = {
     logrequests: true,
     mongo: {
         path: "mongodb://localhost/matrix",
-    }
+    },
+    timeout: 5000
 };
 module.exports = config;

@@ -36,7 +36,10 @@
 - Admin jelszó `'admin' - String`
 - Új kérdés `'new' - Undefined`
 - Játékos elvetése `'drop' - String`
+- Új játék `'gameover' - Undefined`
 
 #### Szerver - Admin
 - Kérdés `'question' - {question: String, answers: [String]}`
 - Helyes válasz `'correct' - String`
+- Játékosok nevei `players - [String]`
+- Kinek mennyi pontja lett `'tables' - [{name: String, score: Number}]`
