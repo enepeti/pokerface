@@ -18,10 +18,10 @@
                 $('#answerb').css("background", "transparent");
                 $('#answerc').css("background", "transparent");
                 
-                $('#question').val(data.question);
-                $('#answera').val(data.answers[0]);
-                $('#answerb').val(data.answers[1]);
-                $('#answerc').val(data.answers[2]);
+                $('#question').html(data.question);
+                $('#answera').html(data.answers[0]);
+                $('#answerb').html(data.answers[1]);
+                $('#answerc').html(data.answers[2]);
                 lastAnswer = null;
                 
                 if(firstQuestion) {
