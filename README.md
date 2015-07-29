@@ -24,19 +24,19 @@
 ## API
 
 #### Kliens - Szerver
-- Saját neve <code> 'username' - String </code>
-- Válasz <code> 'answer' - String </code>
+- Saját neve `'username' - String`
+- Válasz `'answer' - String`
 
 #### Szerver - Kliens
-- Kérdés <code> 'question' - {question: String, answers: [String]} </code>
-- Helyes válasz-e <code> 'correct' - String </code>
-- Hány helyese volt <code> 'score' - Number </code>
+- Kérdés `'question' - {question: String, answers: [String]}`
+- Helyes válasz-e `'correct' - String`
+- Hány helyese volt `'score' - Number`
 
 #### Admin - Szerver
-- Admin jelszó <code> 'admin' - String </code>
-- Új kérdés <code> 'new' - Undefined </code>
-- Játékos elvetése <code> 'drop' - String </code>
+- Admin jelszó `'admin' - String`
+- Új kérdés `'new' - Undefined`
+- Játékos elvetése `'drop' - String`
 
 #### Szerver - Admin
-- Kérdés <code> 'question' - {question: String, answers: [String]} </code>
-- Helyes válasz <code> 'correct' - String </code>
+- Kérdés `'question' - {question: String, answers: [String]}`
+- Helyes válasz `'correct' - String`
