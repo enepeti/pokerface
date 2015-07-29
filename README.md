@@ -20,3 +20,23 @@
 - Ha több azonos név van, akkor esetleg a backend visszautasíthatja a másodikat, és akkor újat kell küldenie
 
 - Kijelző: A játékosok neveit, jelenlegi pontszámukat lehet megnézni, mondjuk a kör végén, szintén külön jogosultságos connection, nincs kliens-szerver forgalom, csak adatot értelmez
+
+## API
+
+#### Kliens - Szerver
+- Saját neve <code> 'username' - String </code>
+- Válasz <code> 'answer' - String </code>
+
+#### Szerver - Kliens
+- Kérdés <code> 'question' - {question: String, answers: [String]} </code>
+- Helyes válasz-e <code> 'correct' - String </code>
+- Hány helyese volt <code> 'score' - Number </code>
+
+#### Admin - Szerver
+- Admin jelszó <code> 'admin' - String </code>
+- Új kérdés <code> 'new' - Undefined </code>
+- Játékos elvetése <code> 'drop' - String </code>
+
+#### Szerver - Admin
+- Kérdés <code> 'question' - {question: String, answers: [String]} </code>
+- Helyes válasz <code> 'correct' - String </code>
