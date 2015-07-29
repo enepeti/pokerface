@@ -1,13 +1,14 @@
 var _ = require("lodash");
 var config = require('./config');
+var _ = require("lodash");
 
 var express = require('express');
-var http = require('http');
-var path = require('path');
 var app = express();
-var _ = require("lodash");
+var http = require('http').Server(app);
+var io = require("socket.io")(http);
+
 var bodyparser = require("body-parser");
-var io = require("socket.io")(http.Server(app));
+var path = require('path');
 
 var data_access_layer = require('./models/dal/mongodb');
 var dal = new data_access_layer(config);
@@ -27,13 +28,13 @@ app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended: true}));
 
 app.get('/', function(req, res){
-   res.sendFile('./views/index.html');
+   res.sendfile('./views/index.html');
 });
 
 io.on('connection', function(socket){
   console.log('a user connected');
 });
 
-http.createServer(app).listen(app.get('port'), function() {
-    console.log("Core started on port " + app.get('port'));
+http.listen(app.get('port'), function(){
+  console.log("Listening on " + app.get('port'));
 });
