@@ -1,8 +1,11 @@
 var Q = require('q');
+var _ = require('lodash');
 
 module.exports = function (dal) {
 
-    this.answers = [];
+    this.roundPoints = {};
+    this.averageTime = {};
+    this.globalPoints = {};
 
     this.getQuestion = function () {
         var deferred = Q.defer();
@@ -34,7 +37,18 @@ module.exports = function (dal) {
     };
 
     this.newAnswers = function (answers, correct) {
-
+        _.forEach(answers, function (ans, id) {
+            if(!averageTime[id]) {
+                averageTime[id] = 0;
+            }
+            if(!roundPoints[id]) {
+                roundPoints[id] = 0;
+            }
+            if(ans.answer == num2char(correct)) {
+                averageTime[id] = (averageTime[id] * roundPoints[id] + ans.time) / roundPoints[id] + 1;
+                roundPoints[id] += 1;
+            }
+        });
     };
 
     this.closeRound = function () {
