@@ -20,15 +20,14 @@ process.on('uncaughtException', function(error) {
 });
 
 app.set('port', config.port);
-app.set('views', path.join(__dirname, '../../views'));
-app.use(express.static(path.join(__dirname, '../../public')));
+app.use(express.static(path.join(__dirname, './public')));
 
 //Initial Express setup
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended: true}));
 
 app.get('/', function(req, res){
-   res.sendfile('./views/index.html');
+   res.sendFile('./views/index.html');
 });
 
 io.on('connection', function(socket){
