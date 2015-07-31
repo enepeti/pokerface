@@ -3,28 +3,32 @@ var _ = require('lodash');
 
 module.exports = function (dal) {
 
-    this.roundPoints = {};
-    this.averageTime = {};
-    this.globalPoints = {};
+    var roundPoints = {};
+    var averageTime = {};
+    var globalPoints = {};
 
     this.getQuestion = function () {
         var deferred = Q.defer();
         function ranodmize (count, asked) {
             var number = Math.floor(Math.random() * count);
             dal.Question.find({asked: asked}).limit(-1).skip(number).exec(function (err, doc) {
-                if(doc.count === 1) {
-                    dal.Question.update({_id: doc._id}, {asked: true}, function (err) {
+                if(err) {
+                    console.log("Error: " + err);
+                }
+                if(doc.length === 1) {
+                    dal.Question.update({_id: doc[0]._id}, {asked: true}, function (err) {
                         if(err) {
                             console.log(err);
                         }
                     });
                     deferred.resolve(doc[0]);
                 } else {
-                    deferred.fail();
+                    console.log("No questions to ask!");
                 }
             });
         };
         dal.Question.count({asked: false}, function (err, doc) {
+            console.log("Currently having " + doc + " unasked questions");
             if(doc == 0) {
                 dal.Question.count({asked: true}, function (err, doc) {
                     ranodmize(doc, true);
@@ -37,6 +41,8 @@ module.exports = function (dal) {
     };
 
     this.newAnswers = function (answers, correct) {
+        console.log('Counting answers');
+        var numsave = this.num2char;
         _.forEach(answers, function (ans, id) {
             if(!averageTime[id]) {
                 averageTime[id] = 0;
@@ -44,8 +50,8 @@ module.exports = function (dal) {
             if(!roundPoints[id]) {
                 roundPoints[id] = 0;
             }
-            if(ans.answer == num2char(correct)) {
-                averageTime[id] = (averageTime[id] * roundPoints[id] + ans.time) / roundPoints[id] + 1;
+            if(ans.answer == numsave(correct)) {
+                averageTime[id] = (averageTime[id] * roundPoints[id] + ans.time) / (roundPoints[id] + 1);
                 roundPoints[id] += 1;
             }
         });
