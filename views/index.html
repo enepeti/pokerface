@@ -34,7 +34,6 @@
                 if(lastAnswer) {
                     $('#answerButton' + lastAnswer).css("background", "red");
                     $('#answer' + lastAnswer).css("background", "red");
-                    lastAnswer = null;
                 }
                 
                 $('#answerButton' + correctAnswer).css("background", "green");
@@ -49,7 +48,7 @@
             });
             
             function sendAnswer(ansLetter) {
-                if(!lastanswer) {
+                if(!lastAnswer) {
                     socket.emit('answer', ansLetter);
                     $('#answerButton' + ansLetter).css("background", "yellow");
                     $('#answer' + ansLetter).css("background", "yellow");
@@ -58,18 +57,19 @@
             }
             
             function sendName() {
-                var name = $('#name').val();
+                var name = $('#team').val() + '-' + $('#name').val();
                 socket.emit('username', name);
                 $('#setName').css("display", "none");
                 firstQuestion = true;
-                //$('#questionaire').css("display", "block");
             }
         </script>
     </head>
     <body>
         <table id="setName">
             <tr>
-                <td>Add meg a neved:</td>
+                <td>Csapatod:</td>
+                <td><input type="text" id="team"/></td>
+                <td>Neved:</td>
                 <td><input type="text" id="name"/></td>
                 <td><button onclick="sendName()">OK</button></td>
             </tr>

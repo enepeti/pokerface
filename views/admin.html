@@ -15,6 +15,7 @@
                 $('#answera').css("background", "transparent");
                 $('#answerb').css("background", "transparent");
                 $('#answerc').css("background", "transparent");
+                
                 $('#question').html(data.question);
                 $('#answera').html(data.answers[0]);
                 $('#answerb').html(data.answers[1]);
@@ -26,12 +27,42 @@
                 $('#answer' + correctAnswer).css("background", "green");
             });
             
+            socket.on('players', function(players) {
+                var playerSelect = $('#playerSelect');
+                while(playerSelect.length > 0) {
+                    playerSelect.remove(0);
+                }
+                var player;
+                for(player of players) {
+                    playerSelect.add(player);
+                }
+            });
+            
+            socket.on('tables', function(scores) {
+                var playerrankings = $('#playerrankings');
+                var score;
+                for(score of scores) {
+                    var tr = $('<tr>');
+                    var nametd = $('<td>');
+                    var scoretd = $('<td>');
+                    nametd.html(score.name);
+                    scoretd.html(score.score);
+                    tr.append(nametd, scoretd);
+                    playerrankings.append(tr);
+                }
+            });
+            
             function newQuestion() {
                 socket.emit('new');
             }
             
             function newGame() {
                 socket.emit('gameover');
+            }
+            
+            function dropPlayer() {
+                var playername = $('#playerSelect').val();
+                socket.emit('drop', playername);
             }
             
             function sendPw() {
@@ -69,6 +100,9 @@
             <tr>
                 <td><button onclick="newGame()">Új játék</button></td>
             </tr>
+        </table>
+        <table id="playerrankings">
+            
         </table>
     </body>
 </html> 
