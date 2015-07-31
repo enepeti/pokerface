@@ -36,6 +36,7 @@
 - Admin jelszó `'admin' - String`
 - Új kérdés `'new' - Undefined`
 - Játékos elvetése `'drop' - String`
+- Utolsó játékos automatikus elvetése `'autodrop' - Undefined`
 - Új játék `'gameover' - Undefined`
 
 #### Szerver - Admin
