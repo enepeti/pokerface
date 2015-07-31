@@ -40,6 +40,7 @@
             
             socket.on('tables', function(scores) {
                 var playerrankings = $('#playerrankings');
+                playerrankings.html('');
                 var score;
                 for(score of scores) {
                     var tr = $('<tr>');
