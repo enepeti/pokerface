@@ -1,0 +1,32 @@
+
+#setName {
+	margin-top: 20px;
+	margin-left: 15px;
+}
+
+#questionaire {
+	margin-top: 20px;
+	margin-left: 15px;	
+}
+
+.form-control1 {
+	margin-right: 8px;
+	margin-left: 8px;
+}
+
+.separated {
+	margin-right: 8px;
+	margin-left: 8px;
+}
+
+.verticalcenter {
+	margin-top: 6px;
+}
+
+.btn {
+	border: 1px solid black;
+}
+
+.font {
+	font-size: 20px;
+}

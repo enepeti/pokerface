@@ -3,6 +3,8 @@
     <head>
         <meta charset="utf-8" /> 
         <title>Pókerarc</title>
+        <link rel="stylesheet" href="bootstrap.min.css" />
+        <link rel="stylesheet" href="main.css" />
         <script src="jquery.min.js"></script>
         <script src="socket.io-1.2.0.js"></script>
         <script>
@@ -67,23 +69,23 @@
     <body>
         <table id="setName">
             <tr>
-                <td>Csapatod:</td>
-                <td><input type="text" id="team"/></td>
-                <td>Neved:</td>
-                <td><input type="text" id="name"/></td>
-                <td><button onclick="sendName()">OK</button></td>
+                <td><p class="separated verticalcenter">Csapatod:</p></td>
+                <td><input type="text" class="form-control" placeholder="Csapatnév" id="team"/></td>
+                <td><p class="separated verticalcenter">Neved:</p></td>
+                <td><input type="text" class="form-control" placeholder="Név" id="name"/></td>
+                <td><button class="btn btn-success separated" onclick="sendName()">OK</button></td>
             </tr>
-        <table border="0" id="questionaire" style="display:none">
+        <table border="0" id="questionaire" style="display:block">
             <tr>
-                <td id="question" colspan="6"></td>
+                <td id="question" class="font" colspan="6"></td>
             </tr>
             <tr>
-                <td><button id="answerButtona" onclick="sendAnswer('a')">A</button></td>
-                <td id="answera"></td>
-                <td><button id="answerButtonb" onclick="sendAnswer('b')">B</button></td>
-                <td id="answerb"></td>
-                <td><button id="answerButtonc" onclick="sendAnswer('c')">C</button></td>
-                <td id="answerc"></td>
+                <td><button class="btn separated" id="answerButtona" onclick="sendAnswer('a')">A</button></td>
+                <td id="answera" class="font"></td>
+                <td><button class="btn separated" id="answerButtonb" onclick="sendAnswer('b')">B</button></td>
+                <td id="answerb" class="font"></td>
+                <td><button class="btn separated" id="answerButtonc" onclick="sendAnswer('c')">C</button></td>
+                <td id="answerc" class="font"></td>
             </tr>
         </table>
         <div id="correctAnswers" style="display:none"></div>
