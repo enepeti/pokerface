@@ -44,3 +44,4 @@
 - Helyes válasz `'correct' - String`
 - Játékosok nevei `players - [String]`
 - Kinek mennyi pontja lett `'tables' - [{name: String, score: Number}]`
+- Kit dobtunk el automatkusan `'last' - String` 

@@ -15,7 +15,10 @@
                 $('#answera').css("background", "transparent");
                 $('#answerb').css("background", "transparent");
                 $('#answerc').css("background", "transparent");
-                
+                $('#roundEnd').css('display', 'none');
+                $('#lastPlayer').html('');
+                $('#playerrankings').html('');
+
                 $('#question').html(data.question);
                 $('#answera').html(data.answers[0]);
                 $('#answerb').html(data.answers[1]);
@@ -42,6 +45,7 @@
             socket.on('tables', function(scores) {
                 var playerrankings = $('#playerrankings');
                 playerrankings.html('');
+                $('#roundEnd').css('display', 'block');
                 var score;
                 for(score of scores) {
                     var tr = $('<tr>');
@@ -52,6 +56,10 @@
                     tr.append(nametd, scoretd);
                     playerrankings.append(tr);
                 }
+            });
+
+            socket.on('last', function(player) {
+                $('#lastPlayer').html(player);
             });
             
             function newQuestion() {
@@ -106,11 +114,13 @@
             </tr>
             <tr>
                 <td><button onclick="dropLast()">Utolsó játékos kiesett</button></td>
+                <td id="lastPlayer"/>
             </tr>
             <tr>
                 <td><button onclick="newGame()">Új játék</button></td>
             </tr>
         </table>
+        <div id="roundEnd" style="display:none">Kör Vége!</div>
         <table id="playerrankings">
             
         </table>

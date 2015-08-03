@@ -59,9 +59,14 @@ exports.newGame = function (dal, config) {
 
     io.on('connection', function(socket) {  //TODO: disconnect handling
         console.log("User connected");
-        players[socket.id] = socket;
         socket.on('username', function (msg) {
+            players[socket.id] = socket;
             players[socket.id].username = msg;
+            emitNames();
+        });
+        socket.on('disconnect', function (msg) {
+            console.log("User disconnected!");
+            delete players[socket.id];
             emitNames();
         });
         socket.on('answer', function (msg) {
@@ -102,7 +107,9 @@ exports.newGame = function (dal, config) {
         socket.on('autodrop', function (msg) {
              if(admin.id == socket.id) {
                 console.log("Autodrop requested");
-                dropPlayer(players[game.last()].username, false);
+                var lastName = players[game.last()].username;
+                dropPlayer(lastName, false);
+                admin.emit('last', lastName);
             }
         });
     });
