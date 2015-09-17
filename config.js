@@ -7,6 +7,8 @@ var config = {
     mongo: {
         path: "mongodb://localhost/pokerarc",
     },
-    timeout: 5000
+    timeout: 10000,
+    weights: [10,20,30,40,50],
+    questionCounts: [8, 5, 5, 5, 5]
 };
 module.exports = config;

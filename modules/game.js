@@ -1,11 +1,14 @@
 var Q = require('q');
 var _ = require('lodash');
 
-module.exports = function (dal) {
+module.exports = function (dal, config) {
 
     var roundPoints = {};
     var averageTime = {};
     var globalPoints = {};
+    var questionCounter = 0;
+    var roundCounter = 0;
+    var roundStart = true;
 
     this.getQuestion = function () {
         var deferred = Q.defer();
@@ -42,6 +45,11 @@ module.exports = function (dal) {
 
     this.newAnswers = function (answers, correct) {
         console.log('Counting answers');
+        if(roundStart) {
+            roundPoints = {};
+            averageTime = {};
+            roundStart = false;
+        }
         var numsave = this.num2char;
         _.forEach(answers, function (ans, id) {
             if(!averageTime[id]) {
@@ -55,11 +63,53 @@ module.exports = function (dal) {
                 roundPoints[id] += 1;
             }
         });
+        questionCounter++;
+        if(questionCounter == config.questionCounts[roundCounter]) {
+            return this.closeRound();
+        }
+        return false;
     };
 
     this.closeRound = function () {
+        console.log("Closing round");
+        questionCounter = 0;
+        roundCounter++;
+        _.forEach(roundPoints, function (rp, id) {
+            if(!globalPoints[id]) {
+                globalPoints[id] = 0;
+            }
+            globalPoints[id] += config.weights[roundCounter] * rp;
+        });
+        roundStart = true;
+        return roundPoints;
+    }
 
-    };
+    this.persistPoints = function (name, id) {
+        new dal.Point({name: name, point: globalPoints[id]}).save();
+    }
+
+    this.last = function () {
+        console.log("Counting last player");
+        var lastPoints = 100;
+        var lastId = 0;
+        for(var id in roundPoints) {
+            if(roundPoints[id] < lastPoints) {
+                lastPoints = roundPoints[id];
+                lastId = id;
+            } else if(roundPoints[id] == lastPoints) {
+                if(globalPoints[id] < globalPoints[lastId]) {
+                    lastPoints = roundPoints[id];
+                    lastId = id;
+                } else if(globalPoints[id] == globalPoints[lastId]) {
+                    if(averageTime[id] > averageTime[lastId]) {
+                        lastPoints = roundPoints[id];
+                        lastId = id;
+                    }
+                }
+            }
+        }
+        return lastId;
+    }
 
     this.num2char = function (num) {
         return num == 0 ? 'a' : (num == 1 ? 'b' : 'c');

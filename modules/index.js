@@ -2,11 +2,11 @@ var _ = require('lodash');
 
 exports.newGame = function (dal, config) {
     var _game = require('./game');
-    var game = new _game(dal);
+    var game = new _game(dal, config);
 
     var players = {};
     var currentAnswers = {};
-    var admin = {};
+    var admin = false;
     var correct = 0;
     var timer = 0;
 
@@ -18,14 +18,56 @@ exports.newGame = function (dal, config) {
             }
         });
         io.emit('correct', game.num2char(correct));
-        game.newAnswers(currentAnswers, correct);
+        var roundEnd = game.newAnswers(currentAnswers, correct);
+        if(roundEnd) {
+            console.log("Round closed, sending points");
+            var tables = [];
+            for(var id in roundEnd) {
+                players[id].emit('score', roundEnd[id]);
+                tables.push({name: players[id].username, score: roundEnd[id]});
+            }
+            admin.emit('tables', tables);
+        }
     }
 
-    io.on('connection', function(socket){
+    function emitNames() {
+        if(admin) {
+            var names = [];
+            _.forEach(players, function (player, id) {
+                if(player.username  ) {
+                    names.push(player.username);
+                }
+            });
+            console.log("Actual players: " + names);
+            admin.emit('players', names);
+        }
+    }
+
+    function dropPlayer(msg, doPersist) {
+        _.forEach(players, function (player, id) {
+            if(player.username == msg) {
+                if(doPersist) {
+                    game.persistPoints(players[id].username, id);
+                }
+                players[id].disconnect();
+                delete players[id];
+                return;
+            }
+        })
+        emitNames();
+    }
+
+    io.on('connection', function(socket) {  //TODO: disconnect handling
         console.log("User connected");
-        players[socket.id] = socket;
         socket.on('username', function (msg) {
+            players[socket.id] = socket;
             players[socket.id].username = msg;
+            emitNames();
+        });
+        socket.on('disconnect', function (msg) {
+            console.log("User disconnected!");
+            delete players[socket.id];
+            emitNames();
         });
         socket.on('answer', function (msg) {
             if(!currentAnswers[socket.id] && timer != 0) {
@@ -54,6 +96,20 @@ exports.newGame = function (dal, config) {
                     timer = Date.now();
                     setTimeout(clearTimer, config.timeout);
                 });
+            }
+        });
+        socket.on('drop', function (msg) {
+            if(admin.id == socket.id) {
+                console.log("Dropping player: " + msg);
+                dropPlayer(msg, true);
+            }
+        });
+        socket.on('autodrop', function (msg) {
+             if(admin.id == socket.id) {
+                console.log("Autodrop requested");
+                var lastName = players[game.last()].username;
+                dropPlayer(lastName, false);
+                admin.emit('last', lastName);
             }
         });
     });

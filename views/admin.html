@@ -15,7 +15,10 @@
                 $('#answera').css("background", "transparent");
                 $('#answerb').css("background", "transparent");
                 $('#answerc').css("background", "transparent");
-                
+                $('#roundEnd').css('display', 'none');
+                $('#lastPlayer').html('');
+                $('#playerrankings').html('');
+
                 $('#question').html(data.question);
                 $('#answera').html(data.answers[0]);
                 $('#answerb').html(data.answers[1]);
@@ -23,24 +26,26 @@
             });
             
             socket.on('correct', function(correctAnswer) {
+                $('#newQuestion').attr('disabled', false);
                 $('#td' + correctAnswer).css("background", "green");
                 $('#answer' + correctAnswer).css("background", "green");
             });
             
             socket.on('players', function(players) {
                 var playerSelect = $('#playerSelect');
-                while(playerSelect.length > 0) {
-                    playerSelect.remove(0);
-                }
+                playerSelect.html('');
                 var player;
                 for(player of players) {
-                    playerSelect.add(player);
+                    var option = $('<option>');
+                    option.html(player);
+                    playerSelect.append(option);
                 }
             });
             
             socket.on('tables', function(scores) {
                 var playerrankings = $('#playerrankings');
                 playerrankings.html('');
+                $('#roundEnd').css('display', 'block');
                 var score;
                 for(score of scores) {
                     var tr = $('<tr>');
@@ -52,8 +57,13 @@
                     playerrankings.append(tr);
                 }
             });
+
+            socket.on('last', function(player) {
+                $('#lastPlayer').html(player);
+            });
             
             function newQuestion() {
+                $('#newQuestion').attr('disabled', true);
                 socket.emit('new');
             }
             
@@ -64,6 +74,10 @@
             function dropPlayer() {
                 var playername = $('#playerSelect').val();
                 socket.emit('drop', playername);
+            }
+
+            function dropLast() {
+                socket.emit('autodrop');
             }
             
             function sendPw() {
@@ -92,16 +106,21 @@
                 <td id="answerc"></td>
             </tr>
             <tr>
-                <td colspan="6"><button onclick="newQuestion()">Új kérdés</button></td>
+                <td colspan="6"><button onclick="newQuestion()" id="newQuestion">Új kérdés</button></td>
             </tr>
             <tr>
                 <td><select id="playerSelect"/></td>
                 <td><button onclick="dropPlayer()">Kiesett</button></td>
             </tr>
             <tr>
+                <td><button onclick="dropLast()">Utolsó játékos kiesett</button></td>
+                <td id="lastPlayer"/>
+            </tr>
+            <tr>
                 <td><button onclick="newGame()">Új játék</button></td>
             </tr>
         </table>
+        <div id="roundEnd" style="display:none">Kör Vége!</div>
         <table id="playerrankings">
             
         </table>
