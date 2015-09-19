@@ -1,0 +1,5 @@
+Idő legyen minden kérdésre külön
+Admin lássa ki mire válaszolt
+Válaszváltás?
+Adminon rosszul ejti ki a játékost
+Adminra név nélkül jönnek a pontok
