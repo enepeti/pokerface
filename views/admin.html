@@ -3,126 +3,70 @@
     <head>
         <meta charset="utf-8" /> 
         <title>Pókerarc admin</title>
+        <link rel="stylesheet" href="bootstrap.min.css" />
         <script src="jquery.min.js"></script>
         <script src="socket.io-1.2.0.js"></script>
-        <script>
-            var socket = io();
-            
-            socket.on('question', function(data) {
-                $('#tda').css("background", "transparent");
-                $('#tdb').css("background", "transparent");
-                $('#tdc').css("background", "transparent");
-                $('#answera').css("background", "transparent");
-                $('#answerb').css("background", "transparent");
-                $('#answerc').css("background", "transparent");
-                $('#roundEnd').css('display', 'none');
-                $('#lastPlayer').html('');
-                $('#playerrankings').html('');
-
-                $('#question').html(data.question);
-                $('#answera').html(data.answers[0]);
-                $('#answerb').html(data.answers[1]);
-                $('#answerc').html(data.answers[2]);
-            });
-            
-            socket.on('correct', function(correctAnswer) {
-                $('#newQuestion').attr('disabled', false);
-                $('#td' + correctAnswer).css("background", "green");
-                $('#answer' + correctAnswer).css("background", "green");
-            });
-            
-            socket.on('players', function(players) {
-                var playerSelect = $('#playerSelect');
-                playerSelect.html('');
-                var player;
-                for(player of players) {
-                    var option = $('<option>');
-                    option.html(player);
-                    playerSelect.append(option);
-                }
-            });
-            
-            socket.on('tables', function(scores) {
-                var playerrankings = $('#playerrankings');
-                playerrankings.html('');
-                $('#roundEnd').css('display', 'block');
-                var score;
-                for(score of scores) {
-                    var tr = $('<tr>');
-                    var nametd = $('<td>');
-                    var scoretd = $('<td>');
-                    nametd.html(score.name);
-                    scoretd.html(score.score);
-                    tr.append(nametd, scoretd);
-                    playerrankings.append(tr);
-                }
-            });
-
-            socket.on('last', function(player) {
-                $('#lastPlayer').html(player);
-            });
-            
-            function newQuestion() {
-                $('#newQuestion').attr('disabled', true);
-                socket.emit('new');
+        <script src="admin.js"></script>
+        <style>
+            .float{
+                float:left;
             }
-            
-            function newGame() {
-                socket.emit('gameover');
+            .separated{
+                margin-bottom:20px;
             }
-            
-            function dropPlayer() {
-                var playername = $('#playerSelect').val();
-                socket.emit('drop', playername);
+            .marginal{
+                margin-left:10px;
+                margin-top:10px;
             }
-
-            function dropLast() {
-                socket.emit('autodrop');
+            .fcontain{
+                overflow:hidden;
             }
-            
-            function sendPw() {
-                var pw = $('#pw').val();
-                $('#pw').val('');
-                socket.emit('admin', pw);
+            .font {
+                font-size: 20px;
+                margin-left: 20px;
             }
-        </script>
+            #roundEnd {
+                display:none;
+            }
+        </style>
     </head>
     <body>
-        <table>
-            <tr>
-                <td>Admin jelszó:</td>
-                <td><input type="text" id="pw"/></td>
-                <td><button onclick="sendPw()">OK</button></td>
-            </tr>
-            <tr>
-                <td id="question" colspan="6"></td>
-            </tr>
-            <tr>
-                <td id="tda">A</td>
-                <td id="answera"></td>
-                <td id="tdb">B</td>
-                <td id="answerb"></td>
-                <td id="tdc">C</td>
-                <td id="answerc"></td>
-            </tr>
-            <tr>
-                <td colspan="6"><button onclick="newQuestion()" id="newQuestion">Új kérdés</button></td>
-            </tr>
-            <tr>
-                <td><select id="playerSelect"/></td>
-                <td><button onclick="dropPlayer()">Kiesett</button></td>
-            </tr>
-            <tr>
-                <td><button onclick="dropLast()">Utolsó játékos kiesett</button></td>
-                <td id="lastPlayer"/>
-            </tr>
-            <tr>
-                <td><button onclick="newGame()">Új játék</button></td>
-            </tr>
-        </table>
-        <div id="roundEnd" style="display:none">Kör Vége!</div>
-        <table id="playerrankings">
+        <div class="marginal">
+            <div class="separated">
+                Admin jelszó:
+                <input type="text" id="pw"/>
+                <button class="btn btn-success" onclick="sendPw()">OK</button>
+            </div>
+            <div id="question"></div>
+            <div class="separated">
+                <span class="font" id="tda">A</span>
+                <span class="font" id="answera"></span>
+            </div>
+            <div class="separated">
+                <span class="font" id="tdb">B</span>
+                <span class="font" id="answerb"></span>
+            </div>
+            <div class="separated">
+                <span class="font" id="tdc">C</span>
+                <span class="font" id="answerc"></span>
+            </div>
+            <div class="separated">
+                <button onclick="newQuestion()"  class="btn btn-primary" id="newQuestion">Új kérdés</button>
+                <button onclick="sendQuestion()" disabled="false" class="btn btn-primary" id="sendQuestion">Kérdés küldése</button>
+            </div>
+            <div class="separated">
+                <select id="playerSelect"></select>
+                <button onclick="dropPlayer()" class="btn btn-danger">Kiesett</button>
+            </div>
+            <div class="separated">
+                <button onclick="dropLast()" class="btn btn-danger">Utolsó játékos kiesett</button>
+                <span id="lastPlayer" class="font"></span>
+            </div>
+            <button onclick="newGame()" class="separated btn btn-primary">Új játék</button>
+            <div id="roundEnd" class="font">Kör Vége!</div>
+            <table id="playerrankings">
             
-        </table>
+            </table>
+        </div>
     </body>
 </html> 

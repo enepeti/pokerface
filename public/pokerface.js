@@ -19,6 +19,7 @@ socket.on('question', function(data) {
     if(firstQuestion) {
         firstQuestion = false;
         $('#questionaire').css("display", "block");
+        $('#correctAnswers').css("display", "none");
     }
 });
 
@@ -27,14 +28,13 @@ socket.on('correct', function(correctAnswer) {
         $('#answerButton' + lastAnswer).css("background", "red");
         $('#answer' + lastAnswer).css("background", "red");
     }
-    
+    lastAnswer = true;
     $('#answerButton' + correctAnswer).css("background", "green");
     $('#answer' + correctAnswer).css("background", "green");
 });
 
 socket.on('score', function(score) {
-    $('correctAnswers').html('Ebben a körben a jó válaszaid száma: ' + score); 
-    $('#questionaire').css("display", "none");
+    $('#correctAnswers').html('Ebben a körben a jó válaszaid száma: ' + score); 
     $('#correctAnswers').css("display", "block");
     firstQuestion = true;
 });

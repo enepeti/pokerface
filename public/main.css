@@ -2,11 +2,13 @@
 #setName {
 	margin-top: 20px;
 	margin-left: 15px;
+    width: 300px;
 }
 
 #questionaire {
 	margin-top: 20px;
-	margin-left: 15px;	
+	margin-left: 15px;
+    display: none;
 }
 
 .form-control1 {
@@ -15,8 +17,8 @@
 }
 
 .separated {
-	margin-right: 8px;
-	margin-left: 8px;
+	margin-top: 8px;
+	margin-bottom: 8px;
 }
 
 .verticalcenter {
@@ -29,4 +31,13 @@
 
 .font {
 	font-size: 20px;
+    margin-left: 20px;
+}
+
+.answercontainer {
+    overflow:hidden;
+}
+
+.fleft {
+    float:left;
 }

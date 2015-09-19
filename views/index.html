@@ -7,88 +7,45 @@
         <link rel="stylesheet" href="main.css" />
         <script src="jquery.min.js"></script>
         <script src="socket.io-1.2.0.js"></script>
-        <script>
-            var socket = io();
-            var lastAnswer = null;
-            var firstQuestion;
-            
-            socket.on('question', function(data) {
-                $('#answerButtona').css("background", "transparent");
-                $('#answerButtonb').css("background", "transparent");
-                $('#answerButtonc').css("background", "transparent");
-                $('#answera').css("background", "transparent");
-                $('#answerb').css("background", "transparent");
-                $('#answerc').css("background", "transparent");
-                
-                $('#question').html(data.question);
-                $('#answera').html(data.answers[0]);
-                $('#answerb').html(data.answers[1]);
-                $('#answerc').html(data.answers[2]);
-                lastAnswer = null;
-                
-                if(firstQuestion) {
-                    firstQuestion = false;
-                    $('#questionaire').css("display", "block");
-                    $('#correctAnswers').css("display", "none");
-                }
-            });
-            
-            socket.on('correct', function(correctAnswer) {
-                if(lastAnswer) {
-                    $('#answerButton' + lastAnswer).css("background", "red");
-                    $('#answer' + lastAnswer).css("background", "red");
-                }
-                lastAnswer = true;
-                $('#answerButton' + correctAnswer).css("background", "green");
-                $('#answer' + correctAnswer).css("background", "green");
-            });
-            
-            socket.on('score', function(score) {
-                $('#correctAnswers').html('Ebben a körben a jó válaszaid száma: ' + score); 
-                $('#correctAnswers').css("display", "block");
-                firstQuestion = true;
-            });
-            
-            function sendAnswer(ansLetter) {
-                if(!lastAnswer) {
-                    socket.emit('answer', ansLetter);
-                    $('#answerButton' + ansLetter).css("background", "yellow");
-                    $('#answer' + ansLetter).css("background", "yellow");
-                    lastAnswer = ansLetter;
-                }
-            }
-            
-            function sendName() {
-                var name = $('#team').val() + '-' + $('#name').val();
-                socket.emit('username', name);
-                $('#setName').css("display", "none");
-                firstQuestion = true;
-            }
-        </script>
         <script src="pokerface.js"></script>
     </head>
     <body>
-        <table id="setName">
-            <tr>
-                <td><p class="separated verticalcenter">Csapatod:</p></td>
-                <td><input type="text" class="form-control" placeholder="Csapatnév" id="team"/></td>
-                <td><p class="separated verticalcenter">Neved:</p></td>
-                <td><input type="text" class="form-control" placeholder="Név" id="name"/></td>
-                <td><button class="btn btn-success separated" onclick="sendName()">OK</button></td>
-            </tr>
-        <table border="0" id="questionaire" style="display:none">
-            <tr>
-                <td id="question" class="font" colspan="6"></td>
-            </tr>
-            <tr>
-                <td><button class="btn separated" id="answerButtona" onclick="sendAnswer('a')">A</button></td>
-                <td id="answera" class="font"></td>
-                <td><button class="btn separated" id="answerButtonb" onclick="sendAnswer('b')">B</button></td>
-                <td id="answerb" class="font"></td>
-                <td><button class="btn separated" id="answerButtonc" onclick="sendAnswer('c')">C</button></td>
-                <td id="answerc" class="font"></td>
-            </tr>
-        </table>
+        <div id="setName">
+            <div class="separated verticalcenter">Csapatod:</div>
+            <div>
+                <input type="text" class="form-control" placeholder="Csapatnév" id="team"/>
+            </div>
+            <div class="separated verticalcenter">Neved:</div>
+            <div>
+                <input type="text" class="form-control" placeholder="Név" id="name"/>
+            </div>
+            <div>
+                <button class="btn btn-success separated" onclick="sendName()">OK</button>
+            </div>
+        </div>
+        <div border="0" id="questionaire">
+            <div>
+                <div id="question" class="font" colspan="6"></div>
+            </div>
+            <div class="answercontainer separated">
+                <div>
+                    <button class="btn fleft" id="answerButtona" onclick="sendAnswer('a')">A</button>
+                </div>
+                <div id="answera" class="font fleft"></div>
+            </div>
+            <div class="answercontainer separated">
+                <div>
+                    <button class="btn fleft" id="answerButtonb" onclick="sendAnswer('b')">B</button>
+                </div>
+                <div id="answerb" class="font fleft"></div>
+            </div>
+            <div class="answercontainer separated">
+                <div>
+                    <button class="btn fleft" id="answerButtonc" onclick="sendAnswer('c')">C</button>
+                </div>
+                <div id="answerc" class="font fleft"></div>
+            </div>
+        </div>
         <div id="correctAnswers" style="display:none"></div>
     </body>
 </html> 
