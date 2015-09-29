@@ -77,3 +77,7 @@ function sendPw() {
     $('#pw').val('');
     socket.emit('admin', pw);
 }
+
+function sendQuestion() {
+    socket.emit('broadcast');
+}

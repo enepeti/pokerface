@@ -111,6 +111,15 @@ module.exports = function (dal, config) {
         return lastId;
     }
 
+    this.updateId = function (oldId, newId) {
+        globalPoints[newId] = globalPoints[oldId];
+        delete globalPoints[oldId];
+        averageTime[newId] = averageTime[oldId];
+        delete averageTime[oldId];
+        roundPoints[newId] = roundPoints[oldId];
+        delete roundPoints[oldId];
+    }
+
     this.num2char = function (num) {
         return num == 0 ? 'a' : (num == 1 ? 'b' : 'c');
     }

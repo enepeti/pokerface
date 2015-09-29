@@ -6,18 +6,23 @@ exports.newGame = function (dal, config) {
 
     var players = {};
     var currentAnswers = {};
+    var currentQuestion;
     var admin = false;
     var correct = 0;
     var timer = 0;
 
     function clearTimer() {
         timer = 0;
+        var adminAnswers = {};
         _.forEach(players, function (user, id) {
             if(!currentAnswers[id]) {
                 currentAnswers[id] = {answer: 'none', time: 0};
             }
+            adminAnswers[user.username] = currentAnswers[id];
         });
         io.emit('correct', game.num2char(correct));
+        console.log(adminAnswers);
+        admin.emit('answers', adminAnswers);
         var roundEnd = game.newAnswers(currentAnswers, correct);
         if(roundEnd) {
             console.log("Round closed, sending points");
@@ -34,7 +39,7 @@ exports.newGame = function (dal, config) {
         if(admin) {
             var names = [];
             _.forEach(players, function (player, id) {
-                if(player.username  ) {
+                if(!player.disconnected) {
                     names.push(player.username);
                 }
             });
@@ -53,21 +58,39 @@ exports.newGame = function (dal, config) {
                 delete players[id];
                 return;
             }
-        })
+        });
         emitNames();
     }
 
-    io.on('connection', function(socket) {  //TODO: disconnect handling
+    function registerPlayer(socket, name) {
+        _.forEach(players, function (element, id) {
+            if(element.username == name && element.disconnected) {
+                console.log("Reconnect: " + name);
+                game.updateId(id, socket.id);
+                players[socket.id] = element;
+                delete players[id];
+                return;
+            }
+        });
+        if(!players[socket.id]) {
+            console.log("New user: " + name);
+            players[socket.id] = socket;
+            players[socket.id].username = name;
+        }
+    }
+
+    io.on('connection', function(socket) {
         console.log("User connected");
         socket.on('username', function (msg) {
-            players[socket.id] = socket;
-            players[socket.id].username = msg;
+            registerPlayer(socket, msg);
             emitNames();
         });
         socket.on('disconnect', function (msg) {
             console.log("User disconnected!");
-            delete players[socket.id];
-            emitNames();
+            if(players[socket.id]) {
+                players[socket.id].disconnected = true;
+                emitNames();
+            }
         });
         socket.on('answer', function (msg) {
             if(!currentAnswers[socket.id] && timer != 0) {
@@ -79,6 +102,7 @@ exports.newGame = function (dal, config) {
                 console.log("Admin on board!");
                 delete players[socket.id];
                 admin = socket;
+                emitNames();
             }
         });
         socket.on('new', function (msg) {
@@ -91,10 +115,9 @@ exports.newGame = function (dal, config) {
                     correct = _.findIndex(res.answers, function (str) {
                         return str == q.answers.correct;
                     });
-                    console.log("Sending question to every player");
-                    io.emit('question', res);
-                    timer = Date.now();
-                    setTimeout(clearTimer, config.timeout);
+                    currentQuestion = res;
+                    console.log("Sending question to admin");
+                    admin.emit('question', res);
                 });
             }
         });
@@ -112,5 +135,13 @@ exports.newGame = function (dal, config) {
                 admin.emit('last', lastName);
             }
         });
+        socket.on('broadcast', function (msg) {
+            if(admin.id == socket.id) {
+                console.log("Sending question to players");
+                io.emit('question', currentQuestion);
+                timer = Date.now();
+                setTimeout(clearTimer, config.timeout);
+            }
+        })
     });
 }

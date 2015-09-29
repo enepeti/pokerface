@@ -38,6 +38,7 @@
 - Játékos elvetése `'drop' - String`
 - Utolsó játékos automatikus elvetése `'autodrop' - Undefined`
 - Új játék `'gameover' - Undefined`
+- Kérdés küldése mindenkinek `'broadcast' - Undefined`
 
 #### Szerver - Admin
 - Kérdés `'question' - {question: String, answers: [String]}`
@@ -45,3 +46,4 @@
 - Játékosok nevei `players - [String]`
 - Kinek mennyi pontja lett `'tables' - [{name: String, score: Number}]`
 - Kit dobtunk el automatkusan `'last' - String` 
+- Mit válaszoltak a játékosok `'answers' - {name: {answer: String (betűjel), time: Number (millisec)}}`

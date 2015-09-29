@@ -9,6 +9,6 @@ var config = {
     },
     timeout: 10000,
     weights: [10,20,30,40,50],
-    questionCounts: [8, 5, 5, 5, 5]
+    questionCounts: [2, 5, 5, 5, 5]
 };
 module.exports = config;
