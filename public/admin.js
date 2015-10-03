@@ -1,4 +1,5 @@
 var socket = io();
+var makeTable = true;
 
 socket.on('question', function(data) {
     $('#tda').css("background", "transparent");
@@ -52,6 +53,16 @@ socket.on('tables', function(scores) {
 
 socket.on('last', function(player) {
     $('#lastPlayer').html(player);
+});
+
+socket.on('answers', function(answers) {
+    $.each(answers, function(index, value) {
+        console.log(index + ":" + value);
+        if(makeTable) {
+            makeTable = false;
+            $('#playerrankings');
+        }
+    });
 });
 
 function newQuestion() {

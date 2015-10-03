@@ -20,6 +20,7 @@ socket.on('question', function(data) {
         firstQuestion = false;
         $('#questionaire').css("display", "block");
         $('#correctAnswers').css("display", "none");
+        $('#waittext').css("display", "none");
     }
 });
 
@@ -52,5 +53,6 @@ function sendName() {
     var name = $('#team').val() + '-' + $('#name').val();
     socket.emit('username', name);
     $('#setName').css("display", "none");
+    $('#waittext').css("display", "block");
     firstQuestion = true;
 }
