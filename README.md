@@ -30,7 +30,8 @@
 #### Szerver - Kliens
 - Kérdés `'question' - {question: String, answers: [String]}`
 - Helyes válasz-e `'correct' - String`
-- Hány helyese volt `'score' - Number`
+- Hány helyese volt `'score' - {round: Number, global: Number}`
+- El lett dobva `'dropped' - Undefined`
 
 #### Admin - Szerver
 - Admin jelszó `'admin' - String`
@@ -44,6 +45,16 @@
 - Kérdés `'question' - {question: String, answers: [String]}`
 - Helyes válasz `'correct' - String`
 - Játékosok nevei `players - [String]`
-- Kinek mennyi pontja lett `'tables' - [{name: String, score: Number}]`
+- Kinek mennyi pontja lett `'tables' - [{name: String, score: {round: Number, global: Number}}]`
 - Kit dobtunk el automatkusan `'last' - String` 
+- Mit válaszoltak a játékosok `'answers' - {name: {answer: String (betűjel), time: Number (millisec)}}`
+
+#### Viewer - Server
+- Viewer jelszó `'viewer' - String`
+
+#### Szerver - Viewer
+- Kérdés `'question' - {question: String, answers: [String]}`
+- Helyes válasz `'correct' - String`
+- Játékosok nevei `players - [String]`
+- Kinek mennyi pontja lett `'tables' - [{name: String, score: {round: Number, global: Number}}]`
 - Mit válaszoltak a játékosok `'answers' - {name: {answer: String (betűjel), time: Number (millisec)}}`

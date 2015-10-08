@@ -1,13 +1,13 @@
 todo
 
-[ ] logolja azt hogy ki hogy áll a kör végén
-[ ] reconnetnél frissítse a neveket
-[ ] excepton a double dropnál
+[x] logolja azt hogy ki hogy áll a kör végén
+[x] reconnetnél frissítse a neveket
+[x] excepton a double dropnál
 [ ] qpapontot írjon nekik is + logoljon
 [X] admin lássa a kis eredményeket
 [X] név megjegyzés frontenden
 [X] admin ne unatkozzon!!!!44
 
-[ ] kérdések sorrendje legyen fix (bss)
-[ ] válaszok sorrendje legyen fix
+[x] kérdések sorrendje legyen fix (bss)
+[x] válaszok sorrendje legyen fix
 [ ] bss-nek readonly admin felület talán
