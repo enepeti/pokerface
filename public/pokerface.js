@@ -45,7 +45,7 @@ socket.on('correct', function(correctAnswer) {
 });
 
 socket.on('score', function(score) {
-    $('#correctAnswers').html('Ebben a körben a jó válaszaid száma: ' + score); 
+    $('#correctAnswers').html('Ebben a körben a jó válaszaid száma: ' + score.round + '<br>Ezzel ' + score.global + ' qpa pontot kockáztatsz.'); 
     $('#correctAnswers').css("display", "block");
     firstQuestion = true;
 });
