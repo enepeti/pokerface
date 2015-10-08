@@ -21,7 +21,8 @@ module.exports = function (dal, config) {
                     deferred.resolve(doc[0]);
                 } else {
                     dal.Question.findOne(function (err, doc) {
-                        deferred.resolve(doc[0]);
+                        console.log(doc);
+                        deferred.resolve(doc);
                     });
                 }
             }

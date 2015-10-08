@@ -103,6 +103,21 @@ socket.on('answers', function(answers) {
     });
 });
 
+function startProgressBar() {
+    $('#progbar').css('display', 'block');
+    $('#progbar').attr('value', 100);
+    var decrease = function () {
+        var current = $('#progbar').attr('value');
+        if(current > 0) {
+            $('#progbar').attr('value', current - 2);
+            setTimeout(decrease, 100);
+        } else {
+            $('#progbar').css('display', 'none');
+        }
+    }
+    setTimeout(decrease, 100);
+}
+
 function newQuestion() {
     //$('#newQuestion').attr('disabled', true);
     socket.emit('new');
@@ -110,7 +125,11 @@ function newQuestion() {
 
 function newGame() {
     socket.emit('gameover');
-    $('#bored').css('display', 'block');
+    if($('#bored').css('display') == 'block') {
+        $('#bored').css('display', 'none');
+    } else {
+        $('#bored').css('display', 'block');
+    }
 }
 
 function dropPlayer() {
@@ -130,4 +149,5 @@ function sendPw() {
 
 function sendQuestion() {
     socket.emit('broadcast');
+    startProgressBar();
 }

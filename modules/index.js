@@ -126,7 +126,6 @@ exports.newGame = function (dal, config) {
                     var res = {question: q.question, answers: q.answers};
                     correct = String.fromCharCode('a'.charCodeAt(0) + q.correct);
                     currentQuestion = res;
-                    console.log(res);
                     console.log("Sending question to admin");
                     toAdmin('question', res);
                 });
