@@ -9,7 +9,7 @@ var config = {
     },
     timeout: 5000,
     weights: [50,100,150,200,250],
-    questionCounts: [8, 5, 5, 5, 5],
+    questionCounts: [2, 2, 2, 2, 2],
     adminPass: 'a',
     viewerPass: 'bss'
 };

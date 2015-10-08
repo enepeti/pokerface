@@ -43,14 +43,22 @@ socket.on('tables', function(scores) {
     th.html('Jó válaszok száma');
     th.addClass('separatedtable');
     header.append(th);
+    th = $('<th>');
+    th.html('Eddigi qpapontok');
+    th.addClass('separatedtable');
+    header.append(th);
     roundEnd = true;
     var score;
     for(score of scores) {
         var nextr = $('#' + score.name);
         var scoretd = $('<td>');
-        scoretd.html(score.score);
+        scoretd.html(score.score.round);
         scoretd.addClass('separatedtable');
         nextr.append(scoretd);
+        var globaltd = $('<td>');
+        globaltd.html(score.score.global);
+        globaltd.addClass('separatedtable');
+        nextr.append(globaltd);
         playerrankings.append(nextr);
     }
 });
