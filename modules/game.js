@@ -12,32 +12,18 @@ module.exports = function (dal, config) {
 
     this.getQuestion = function () {
         var deferred = Q.defer();
-        function ranodmize (count, asked) {
-            var number = Math.floor(Math.random() * count);
-            dal.Question.find({asked: asked}).limit(-1).skip(number).exec(function (err, doc) {
-                if(err) {
-                    console.log("Error: " + err);
-                }
-                if(doc.length === 1) {
-                    dal.Question.update({_id: doc[0]._id}, {asked: true}, function (err) {
-                        if(err) {
-                            console.log(err);
-                        }
-                    });
+        dal.Question.find({asked: false}).sort({position: 1}).limit(-1).exec(function (err, doc) {
+            if(err) {
+                console.log("DB error during question randomization");
+            } else {
+                if(doc.length > 0) {
+                    dal.Question.update({_id: doc[0]._id}, {asked: true}, function (err) { });
                     deferred.resolve(doc[0]);
                 } else {
-                    console.log("No questions to ask!");
+                    dal.Question.findOne(function (err, doc) {
+                        deferred.resolve(doc[0]);
+                    });
                 }
-            });
-        };
-        dal.Question.count({asked: false}, function (err, doc) {
-            console.log("Currently having " + doc + " unasked questions");
-            if(doc == 0) {
-                dal.Question.count({asked: true}, function (err, doc) {
-                    ranodmize(doc, true);
-                });
-            } else {
-                ranodmize(doc, false);
             }
         });
         return deferred.promise;

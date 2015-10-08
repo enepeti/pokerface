@@ -6,19 +6,17 @@ module.exports = function(mongoose) {
                 return new mongoose.Types.ObjectId();
             }
         },
+        position: {
+            type: Number
+        },
         question: {
             type: String
         },
         answers: {
-            correct: {
-                type: String
-            },
-            wrong1: {
-                type: String
-            },
-            wrong2: {
-                type: String
-            }
+            type: [String]
+        },
+        correct: {
+            type: Number
         },
         asked: {
             type: Boolean

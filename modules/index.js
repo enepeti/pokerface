@@ -69,6 +69,7 @@ exports.newGame = function (dal, config) {
                 console.log("Reconnect: " + name);
                 game.updateId(id, socket.id);
                 players[socket.id] = element;
+                players[socket.id].disconnected = false;
                 delete players[id];
                 return;
             }
@@ -113,10 +114,8 @@ exports.newGame = function (dal, config) {
                 game.getQuestion().then(function (q) {
                     console.log("Question randomized");
                     console.log(q);
-                    var res = {question: q.question, answers: _.shuffle([q.answers.correct, q.answers.wrong1, q.answers.wrong2])};
-                    correct = _.findIndex(res.answers, function (str) {
-                        return str == q.answers.correct;
-                    });
+                    var res = {question: q.question, answers: q.answers};
+                    correct = String.fromCharCode('a'.charCodeAt(0) + q.correct);
                     currentQuestion = res;
                     console.log(res);
                     console.log("Sending question to admin");
