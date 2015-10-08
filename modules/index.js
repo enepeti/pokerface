@@ -111,11 +111,13 @@ exports.newGame = function (dal, config) {
                 currentAnswers = {};
                 game.getQuestion().then(function (q) {
                     console.log("Question randomized");
+                    console.log(q);
                     var res = {question: q.question, answers: _.shuffle([q.answers.correct, q.answers.wrong1, q.answers.wrong2])};
                     correct = _.findIndex(res.answers, function (str) {
                         return str == q.answers.correct;
                     });
                     currentQuestion = res;
+                    console.log(res);
                     console.log("Sending question to admin");
                     admin.emit('question', res);
                 });

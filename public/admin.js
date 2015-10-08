@@ -56,13 +56,24 @@ socket.on('last', function(player) {
 });
 
 socket.on('answers', function(answers) {
-    $.each(answers, function(index, value) {
+    //alert('kaka');
+    /*$.each(answers, function(index, value) {
         console.log(index + ":" + value);
         if(makeTable) {
             makeTable = false;
-            $('#playerrankings');
+            var table = $('#playerrankings');
+            var playertr = $('<tr>');
+            playertr.selector = index;
+            var nametd = $('<td>');
+            playertr.html(index);
+            playertr.append(nametd);
+            table.append(playertr);
         }
-    });
+        var nextr = $('#' + index);
+        var anstd = $('<td>');
+        anstd.html(value.answer + ' ' + value.time);
+        nextr.append(anstd);
+    });*/
 });
 
 function newQuestion() {

@@ -1,0 +1,12 @@
+todo
+
+[ ] logolja azt hogy ki hogy áll a kör végén
+[ ] reconnetnél frissítse a neveket
+[ ] excepton a double dropnál
+[ ] qpapontot írjon nekik is + logoljon
+[ ] admin lássa a kis eredményeket
+[ ] név megjegyzés frontenden
+
+[ ] kérdések sorrendje legyen fix (bss)
+[ ] válaszok sorrendje legyen fix
+[ ] bss-nek readonly admin felület talán
