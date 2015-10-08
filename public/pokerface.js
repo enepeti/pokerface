@@ -1,6 +1,16 @@
 var socket = io();
 var lastAnswer = null;
 var firstQuestion;
+var inPlay = true;
+
+$(document).ready(function () {
+    var team = localStorage['team'];
+    var name = localStorage['name'];
+    if(team || name) {
+        $('#team').val(team);
+        $('#name').val(name);
+    }
+});
 
 socket.on('question', function(data) {
     $('#answerButtona').css("background", "transparent");
@@ -40,6 +50,18 @@ socket.on('score', function(score) {
     firstQuestion = true;
 });
 
+socket.on('dropped', function() {
+    inPlay = false;
+    localStorage['name'] = null;
+    localStorage['team'] = null;
+});
+
+socket.on('disconnect', function() {
+    if(inPlay) {
+        location.reload();
+    }
+});
+
 function sendAnswer(ansLetter) {
     if(!lastAnswer) {
         socket.emit('answer', ansLetter);
@@ -50,8 +72,12 @@ function sendAnswer(ansLetter) {
 }
 
 function sendName() {
-    var name = $('#team').val() + '-' + $('#name').val();
-    socket.emit('username', name);
+    var team = $('#team').val();
+    var name = $('#name').val();
+    var username = team + '-' + name;
+    localStorage['name'] = name;
+    localStorage['team'] = team;
+    socket.emit('username', username);
     $('#setName').css("display", "none");
     $('#waittext').css("display", "block");
     firstQuestion = true;

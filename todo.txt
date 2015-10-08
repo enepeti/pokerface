@@ -4,8 +4,9 @@ todo
 [ ] reconnetnél frissítse a neveket
 [ ] excepton a double dropnál
 [ ] qpapontot írjon nekik is + logoljon
-[ ] admin lássa a kis eredményeket
-[ ] név megjegyzés frontenden
+[X] admin lássa a kis eredményeket
+[X] név megjegyzés frontenden
+[X] admin ne unatkozzon!!!!44
 
 [ ] kérdések sorrendje legyen fix (bss)
 [ ] válaszok sorrendje legyen fix

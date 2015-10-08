@@ -9,64 +9,78 @@
         <script src="admin.js"></script>
         <style>
             .float{
-                float:left;
+                float: left;
             }
             .separated{
-                margin-bottom:20px;
+                margin-bottom: 20px;
             }
             .marginal{
-                margin-left:10px;
-                margin-top:10px;
+                margin-left: 10px;
+                margin-top: 10px;
             }
             .fcontain{
-                overflow:hidden;
+                overflow: hidden;
             }
             .font {
                 font-size: 20px;
                 margin-left: 20px;
             }
             #roundEnd {
-                display:none;
+                display: none;
+            }
+            .separatedtable {
+                padding: 5px;
+                text-align: center;
+            }
+            #bored {
+                display: none;
             }
         </style>
     </head>
     <body>
-        <div class="marginal">
-            <div class="separated">
-                Admin jelszó:
-                <input type="text" id="pw"/>
-                <button class="btn btn-success" onclick="sendPw()">OK</button>
+        <div class="fcontain">
+            <div class="marginal float">
+                <div class="separated">
+                    Admin jelszó:
+                    <input type="text" id="pw"/>
+                    <button class="btn btn-success" onclick="sendPw()">OK</button>
+                </div>
+                <div id="question"></div>
+                <div class="separated">
+                    <span class="font" id="tda">A</span>
+                    <span class="font" id="answera"></span>
+                </div>
+                <div class="separated">
+                    <span class="font" id="tdb">B</span>
+                    <span class="font" id="answerb"></span>
+                </div>
+                <div class="separated">
+                    <span class="font" id="tdc">C</span>
+                    <span class="font" id="answerc"></span>
+                </div>
+                <div class="separated">
+                    <button onclick="newQuestion()"  class="btn btn-primary" id="newQuestion">Új kérdés</button>
+                    <button onclick="sendQuestion()"  class="btn btn-primary" id="sendQuestion">Kérdés küldése</button>
+                </div>
+                <div class="separated">
+                    <select id="playerSelect"></select>
+                    <button onclick="dropPlayer()" class="btn btn-danger">Kiesett</button>
+                </div>
+                <div class="separated">
+                    <button onclick="dropLast()" class="btn btn-danger">Utolsó játékos kiesett</button>
+                    <span id="lastPlayer" class="font"></span>
+                </div>
+                <button onclick="newGame()" class="separated btn btn-primary">Unatkozom =(</button>
+                <div id="roundEnd" class="font">Kör Vége!</div>
+                <table id="playerrankings">
+                    <tr id="header">
+                        <th class="separatedtable">Játékos</th>
+                    </tr>
+                </table>
             </div>
-            <div id="question"></div>
-            <div class="separated">
-                <span class="font" id="tda">A</span>
-                <span class="font" id="answera"></span>
+            <div id="bored">
+                <img src="bored.gif">
             </div>
-            <div class="separated">
-                <span class="font" id="tdb">B</span>
-                <span class="font" id="answerb"></span>
-            </div>
-            <div class="separated">
-                <span class="font" id="tdc">C</span>
-                <span class="font" id="answerc"></span>
-            </div>
-            <div class="separated">
-                <button onclick="newQuestion()"  class="btn btn-primary" id="newQuestion">Új kérdés</button>
-                <button onclick="sendQuestion()"  class="btn btn-primary" id="sendQuestion">Kérdés küldése</button>
-            </div>
-            <div class="separated">
-                <select id="playerSelect"></select>
-                <button onclick="dropPlayer()" class="btn btn-danger">Kiesett</button>
-            </div>
-            <div class="separated">
-                <button onclick="dropLast()" class="btn btn-danger">Utolsó játékos kiesett</button>
-                <span id="lastPlayer" class="font"></span>
-            </div>
-            <button onclick="newGame()" class="separated btn btn-primary">Új játék</button>
-            <div id="roundEnd" class="font">Kör Vége!</div>
-            <table id="playerrankings">
-            
-            </table>
         </div>
     </body>
 </html> 

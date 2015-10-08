@@ -1,5 +1,6 @@
 var socket = io();
 var makeTable = true;
+var roundEnd = false;
 
 socket.on('question', function(data) {
     $('#tda').css("background", "transparent");
@@ -10,7 +11,6 @@ socket.on('question', function(data) {
     $('#answerc').css("background", "transparent");
     $('#roundEnd').css('display', 'none');
     $('#lastPlayer').html('');
-    $('#playerrankings').html('');
 
     $('#question').html(data.question);
     $('#answera').html(data.answers[0]);
@@ -19,7 +19,7 @@ socket.on('question', function(data) {
 });
 
 socket.on('correct', function(correctAnswer) {
-    $('#newQuestion').attr('disabled', false);
+    //$('#newQuestion').attr('disabled', false);
     $('#td' + correctAnswer).css("background", "green");
     $('#answer' + correctAnswer).css("background", "green");
 });
@@ -37,17 +37,21 @@ socket.on('players', function(players) {
 
 socket.on('tables', function(scores) {
     var playerrankings = $('#playerrankings');
-    playerrankings.html('');
     $('#roundEnd').css('display', 'block');
+    var header = $('#header');
+    var th = $('<th>');
+    th.html('Jó válaszok száma');
+    th.addClass('separatedtable');
+    header.append(th);
+    roundEnd = true;
     var score;
     for(score of scores) {
-        var tr = $('<tr>');
-        var nametd = $('<td>');
+        var nextr = $('#' + score.name);
         var scoretd = $('<td>');
-        nametd.html(score.name);
         scoretd.html(score.score);
-        tr.append(nametd, scoretd);
-        playerrankings.append(tr);
+        scoretd.addClass('separatedtable');
+        nextr.append(scoretd);
+        playerrankings.append(nextr);
     }
 });
 
@@ -56,33 +60,57 @@ socket.on('last', function(player) {
 });
 
 socket.on('answers', function(answers) {
-    //alert('kaka');
-    /*$.each(answers, function(index, value) {
-        console.log(index + ":" + value);
+    $.each(answers, function(index, value) {
+        console.log(index + ":" + value.answer + ' ' + value.time);
         if(makeTable) {
             makeTable = false;
             var table = $('#playerrankings');
             var playertr = $('<tr>');
-            playertr.selector = index;
+            playertr.attr('id', index);
             var nametd = $('<td>');
-            playertr.html(index);
+            nametd.html(index);
+            nametd.addClass('separatedtable');
             playertr.append(nametd);
             table.append(playertr);
         }
+
+        if(roundEnd) {
+            roundEnd = false;
+            var header = $('#header');
+            header.html('');
+            var th = $('<th>');
+            th.html('Játékos');
+            th.addClass('separatedtable')
+            header.append(th);
+            var nextr = $('#' + index);
+            nextr.html('');
+            var nametd = $('<td>');
+            nametd.html(index);
+            nametd.addClass('separatedtable');
+            nextr.append(nametd);
+        }
+
+        var header = $('#header');
+        var th = $('<th>');
+        th.html('Válasz');
+        th.addClass('separatedtable');
+        header.append(th);
         var nextr = $('#' + index);
         var anstd = $('<td>');
         anstd.html(value.answer + ' ' + value.time);
+        anstd.addClass('separatedtable');
         nextr.append(anstd);
-    });*/
+    });
 });
 
 function newQuestion() {
-    $('#newQuestion').attr('disabled', true);
+    //$('#newQuestion').attr('disabled', true);
     socket.emit('new');
 }
 
 function newGame() {
     socket.emit('gameover');
+    $('#bored').css('display', 'block');
 }
 
 function dropPlayer() {
