@@ -8,8 +8,18 @@ exports.newGame = function (dal, config) {
     var currentAnswers = {};
     var currentQuestion;
     var admin = false;
+    var viewer = false;
     var correct = 0;
     var timer = 0;
+
+    function toAdmin(msg, payload) {
+        if(admin) {
+            admin.emit(msg, payload);
+        }
+        if(viewer) {
+            viewer.emit(msg, payload);
+        }
+    }
 
     function clearTimer() {
         timer = 0;
@@ -22,7 +32,7 @@ exports.newGame = function (dal, config) {
         });
         io.emit('correct', game.num2char(correct));
         console.log(adminAnswers);
-        admin.emit('answers', adminAnswers);
+        toAdmin('answers', adminAnswers);
         var roundEnd = game.newAnswers(currentAnswers, correct);
         if(roundEnd) {
             console.log("Round closed, sending points");
@@ -31,7 +41,7 @@ exports.newGame = function (dal, config) {
                 players[id].emit('score', {round: roundEnd.round[id], global: roundEnd.global[id]});
                 tables.push({name: players[id].username, score: {round: roundEnd.round[id], global: roundEnd.global[id]}});
             }
-            admin.emit('tables', tables);
+            toAdmin('tables', tables);
             console.log(tables);
         }
     }
@@ -45,7 +55,7 @@ exports.newGame = function (dal, config) {
                 }
             });
             console.log("Actual players: " + names);
-            admin.emit('players', names);
+            toAdmin('players', names);
         }
     }
 
@@ -100,9 +110,8 @@ exports.newGame = function (dal, config) {
             }
         });
         socket.on('admin', function (msg) {
-            if(msg === 'a') {
+            if(msg === config.adminPass) {
                 console.log("Admin on board!");
-                delete players[socket.id];
                 admin = socket;
                 emitNames();
             }
@@ -119,7 +128,7 @@ exports.newGame = function (dal, config) {
                     currentQuestion = res;
                     console.log(res);
                     console.log("Sending question to admin");
-                    admin.emit('question', res);
+                    toAdmin('question', res);
                 });
             }
         });
@@ -144,6 +153,12 @@ exports.newGame = function (dal, config) {
                 timer = Date.now();
                 setTimeout(clearTimer, config.timeout);
             }
-        })
+        });
+        socket.on('viewer', function (msg) {
+            if(msg == config.viewerPass) {
+                viewer = socket;
+                console.log("Viewer connected");
+            }
+        });
     });
 }

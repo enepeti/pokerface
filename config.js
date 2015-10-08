@@ -8,7 +8,9 @@ var config = {
         path: "mongodb://localhost/pokerarc",
     },
     timeout: 5000,
-    weights: [10,10,10,10,10],
-    questionCounts: [8, 5, 5, 5, 5]
+    weights: [50,100,150,200,250],
+    questionCounts: [8, 5, 5, 5, 5],
+    adminPass: 'a',
+    viewerPass: 'bss'
 };
 module.exports = config;

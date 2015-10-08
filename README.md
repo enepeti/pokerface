@@ -48,3 +48,13 @@
 - Kinek mennyi pontja lett `'tables' - [{name: String, score: {round: Number, global: Number}}]`
 - Kit dobtunk el automatkusan `'last' - String` 
 - Mit válaszoltak a játékosok `'answers' - {name: {answer: String (betűjel), time: Number (millisec)}}`
+
+#### Viewer - Server
+- Viewer jelszó `'viewer' - String`
+
+#### Szerver - Viewer
+- Kérdés `'question' - {question: String, answers: [String]}`
+- Helyes válasz `'correct' - String`
+- Játékosok nevei `players - [String]`
+- Kinek mennyi pontja lett `'tables' - [{name: String, score: {round: Number, global: Number}}]`
+- Mit válaszoltak a játékosok `'answers' - {name: {answer: String (betűjel), time: Number (millisec)}}`
