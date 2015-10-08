@@ -27,11 +27,12 @@ exports.newGame = function (dal, config) {
         if(roundEnd) {
             console.log("Round closed, sending points");
             var tables = [];
-            for(var id in roundEnd) {
-                players[id].emit('score', roundEnd[id]);
-                tables.push({name: players[id].username, score: roundEnd[id]});
+            for(var id in roundEnd.round) {
+                players[id].emit('score', {round: roundEnd.round[id], global: roundEnd.global[id]});
+                tables.push({name: players[id].username, score: {round: roundEnd.round[id], global: roundEnd.global[id]}});
             }
             admin.emit('tables', tables);
+            console.log(tables);
         }
     }
 

@@ -81,7 +81,7 @@ module.exports = function (dal, config) {
             globalPoints[id] += config.weights[roundCounter] * rp;
         });
         roundStart = true;
-        return roundPoints;
+        return {round: roundPoints, global: globalPoints};
     }
 
     this.persistPoints = function (name, id) {

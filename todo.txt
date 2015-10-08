@@ -1,6 +1,6 @@
 todo
 
-[ ] logolja azt hogy ki hogy áll a kör végén
+[x] logolja azt hogy ki hogy áll a kör végén
 [ ] reconnetnél frissítse a neveket
 [ ] excepton a double dropnál
 [ ] qpapontot írjon nekik is + logoljon
