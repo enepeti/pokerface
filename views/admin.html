@@ -40,6 +40,10 @@
             #bored {
                 display: none;
             }
+            #progbar {
+                margin: 15px;
+                width: 200px;
+            }
         </style>
     </head>
     <body>
@@ -66,6 +70,7 @@
                 <div class="separated">
                     <button onclick="newQuestion()"  class="btn btn-primary" id="newQuestion">Új kérdés</button>
                     <button onclick="sendQuestion()"  class="btn btn-primary" id="sendQuestion">Kérdés küldése</button>
+                    <progress id="progbar" max="100" value="100" style="display:none;"></progress>
                 </div>
                 <div class="separated">
                     <select id="playerSelect"></select>

@@ -78,8 +78,8 @@ exports.newGame = function (dal, config) {
             if(element.username == name && element.disconnected) {
                 console.log("Reconnect: " + name);
                 game.updateId(id, socket.id);
-                players[socket.id] = element;
-                players[socket.id].disconnected = false;
+                players[socket.id] = socket;
+                players[socket.id].username = name;
                 delete players[id];
                 return;
             }
@@ -126,7 +126,6 @@ exports.newGame = function (dal, config) {
                     var res = {question: q.question, answers: q.answers};
                     correct = String.fromCharCode('a'.charCodeAt(0) + q.correct);
                     currentQuestion = res;
-                    console.log(res);
                     console.log("Sending question to admin");
                     toAdmin('question', res);
                 });
