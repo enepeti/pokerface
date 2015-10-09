@@ -10,6 +10,9 @@ $(document).ready(function () {
         $('#team').val(team);
         $('#name').val(name);
     }
+
+    var progressInterval = setInterval(progress, 100);
+
 });
 
 socket.on('question', function(data) {
@@ -32,6 +35,8 @@ socket.on('question', function(data) {
         $('#correctAnswers').css("display", "none");
         $('#waittext').css("display", "none");
     }
+
+    $('#probar').val(90);
 });
 
 socket.on('correct', function(correctAnswer) {
@@ -81,4 +86,11 @@ function sendName() {
     $('#setName').css("display", "none");
     $('#waittext').css("display", "block");
     firstQuestion = true;
+}
+
+function progress() {
+    var bar = $('#probar');
+    if(bar.val() > 0) {
+        bar.val(bar.val() - 1);
+    }
 }
