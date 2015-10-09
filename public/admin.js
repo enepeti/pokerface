@@ -33,30 +33,17 @@ socket.on('players', function(players) {
 });
 
 socket.on('tables', function(scores) {
-    var playerrankings = $('#playerrankings');
     $('#roundEnd').css('display', 'block');
-    var header = $('#header');
-    var th = $('<th>');
-    th.html('Jó válaszok száma');
-    th.addClass('separatedtable');
-    header.append(th);
-    th = $('<th>');
-    th.html('Eddigi qpapontok');
-    th.addClass('separatedtable');
-    header.append(th);
+
+    newElement('#header', '<th>', 'Jó válaszok száma');
+    newElement('#header', '<th>', 'Eddigi qpapontok');
+
     roundEnd = true;
     var score;
     for(score of scores) {
         var nextr = $('#' + score.name);
-        var scoretd = $('<td>');
-        scoretd.html(score.score.round);
-        scoretd.addClass('separatedtable');
-        nextr.append(scoretd);
-        var globaltd = $('<td>');
-        globaltd.html(score.score.global);
-        globaltd.addClass('separatedtable');
-        nextr.append(globaltd);
-        playerrankings.append(nextr);
+        newElement('#' + score.name, '<td>', score.score.round);
+        newElement('#' + score.name, '<td>', score.score.global);
     }
 });
 
@@ -65,47 +52,26 @@ socket.on('last', function(player) {
 });
 
 socket.on('answers', function(answers) {
+    if(roundEnd) {
+        newElement('#header', '<th>', 'Játékos', {empty: true});
+    }
+    newElement('#header', '<th>', 'Válasz');
     $.each(answers, function(index, value) {
-        console.log(index + ":" + value.answer + ' ' + value.time);
         if(makeTable) {
-            makeTable = false;
             var table = $('#playerrankings');
             var playertr = $('<tr>');
             playertr.attr('id', index);
-            var nametd = $('<td>');
-            nametd.html(index);
-            nametd.addClass('separatedtable');
-            playertr.append(nametd);
+            newElement(playertr, '<td>', index);
             table.append(playertr);
         }
 
         if(roundEnd) {
-            roundEnd = false;
-            var header = $('#header');
-            header.html('');
-            var th = $('<th>');
-            th.html('Játékos');
-            th.addClass('separatedtable')
-            header.append(th);
-            var nextr = $('#' + index);
-            nextr.html('');
-            var nametd = $('<td>');
-            nametd.html(index);
-            nametd.addClass('separatedtable');
-            nextr.append(nametd);
+            newElement('#' + index, '<td>', index, {empty: true});
         }
-
-        var header = $('#header');
-        var th = $('<th>');
-        th.html('Válasz');
-        th.addClass('separatedtable');
-        header.append(th);
-        var nextr = $('#' + index);
-        var anstd = $('<td>');
-        anstd.html(value.answer + ' ' + value.time);
-        anstd.addClass('separatedtable');
-        nextr.append(anstd);
+        newElement('#' + index, '<td>', value.answer + ' ' + value.time);
     });
+    makeTable = false;
+    roundEnd = false;
 });
 
 function startProgressBar() {
@@ -132,6 +98,19 @@ function updatePlayerList(players, selector, element) {
         option.html(player);
         playerSelect.append(option);
     }
+}
+
+function newElement(parent, tag, html, options) {
+        if(typeof parent === "string") {
+            parent = $(parent);
+        }
+        if(options && options.empty) {
+            parent.html('');
+        }
+        var anstd = $(tag);
+        anstd.html(html);
+        anstd.addClass('separatedtable');
+        parent.append(anstd);
 }
 
 function newQuestion() {
