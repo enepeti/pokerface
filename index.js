@@ -39,6 +39,10 @@ app.get('/admin', function(req, res){
    res.sendfile('./views/admin.html');
 });
 
+app.get('/viewer', function(req, res){
+   res.sendfile('./views/viewer.html');
+});
+
 http.listen(app.get('port'), function(){
   console.log("Listening on " + app.get('port'));
 });

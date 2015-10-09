@@ -8,6 +8,14 @@
         <script src="socket.io-1.2.0.js"></script>
         <script src="admin.js"></script>
         <style>
+            #background{
+                background: url("http://bss.sch.bme.hu/files/site_content/logo/bss_logo.png") no-repeat center top;
+                opacity: 0.15;
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+            }
             .float{
                 float: left;
             }
@@ -47,12 +55,13 @@
         </style>
     </head>
     <body>
+        <div id="background"></div>
         <div class="fcontain">
             <div class="marginal float">
                 <div class="separated">
-                    Admin jelszó:
+                    Kijelző jelszó:
                     <input type="text" id="pw"/>
-                    <button class="btn btn-success" onclick="sendPw('admin')">OK</button>
+                    <button class="btn btn-success" onclick="sendPw('viewer')">OK</button>
                 </div>
                 <div id="question" class="font"></div>
                 <div class="separated">
@@ -67,29 +76,15 @@
                     <span class="font" id="tdc">C</span>
                     <span class="font" id="answerc"></span>
                 </div>
-                <div class="separated">
-                    <button onclick="newQuestion()"  class="btn btn-primary" id="newQuestion">Új kérdés</button>
-                    <button onclick="sendQuestion()"  class="btn btn-primary" id="sendQuestion">Kérdés küldése</button>
-                    <progress id="progbar" max="100" value="100" style="display:none;"></progress>
-                </div>
-                <div class="separated">
-                    <select id="playerSelect"></select>
-                    <button onclick="dropPlayer()" class="btn btn-danger">Kiesett</button>
-                </div>
-                <div class="separated">
-                    <button onclick="dropLast()" class="btn btn-danger">Utolsó játékos kiesett</button>
-                    <span id="lastPlayer" class="font"></span>
-                </div>
-                <button onclick="newGame()" class="separated btn btn-primary">Unatkozom =(</button>
+                <h4>Játékosok</h4>
+                <ul id="players">
+                </ul>
                 <div id="roundEnd" class="font">Kör Vége!</div>
                 <table id="playerrankings">
                     <tr id="header">
                         <th class="separatedtable">Játékos</th>
                     </tr>
                 </table>
-            </div>
-            <div id="bored">
-                <img src="bored.gif">
             </div>
         </div>
     </body>

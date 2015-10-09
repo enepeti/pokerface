@@ -157,6 +157,7 @@ exports.newGame = function (dal, config) {
             if(msg == config.viewerPass) {
                 viewer = socket;
                 console.log("Viewer connected");
+                emitNames();
             }
         });
     });

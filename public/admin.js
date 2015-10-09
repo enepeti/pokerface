@@ -25,13 +25,10 @@ socket.on('correct', function(correctAnswer) {
 });
 
 socket.on('players', function(players) {
-    var playerSelect = $('#playerSelect');
-    playerSelect.html('');
-    var player;
-    for(player of players) {
-        var option = $('<option>');
-        option.html(player);
-        playerSelect.append(option);
+    if($('#playerSelect').length !== 0) {    //admin and viewer respectively
+        updatePlayerList(players, '#playerSelect', '<option>');
+    } else {
+        updatePlayerList(players, '#players', '<li>');
     }
 });
 
@@ -126,6 +123,17 @@ function startProgressBar() {
     setTimeout(decrease, 100);
 }
 
+function updatePlayerList(players, selector, element) {
+    var playerSelect = $(selector);
+    playerSelect.html('');
+    var player;
+    for(player of players) {
+        var option = $(element);
+        option.html(player);
+        playerSelect.append(option);
+    }
+}
+
 function newQuestion() {
     //$('#newQuestion').attr('disabled', true);
     socket.emit('new');
@@ -149,10 +157,10 @@ function dropLast() {
     socket.emit('autodrop');
 }
 
-function sendPw() {
+function sendPw(type) {
     var pw = $('#pw').val();
     $('#pw').val('');
-    socket.emit('admin', pw);
+    socket.emit(type, pw);
 }
 
 function sendQuestion() {
